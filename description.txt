@@ -1,0 +1,1 @@
+Protects against spam in the chat.
