@@ -39,12 +39,11 @@ minetest.register_on_chat_message(function(name,message)
         local amount=PLAYERS_FREQ[name][2]
         local speed=PLAYERS_FREQ[name][1]
         local delay=minetest.get_us_time()-PLAYERS_FREQ[name][3]
-        speed=speed*amount+delay/(amount+1)
-        minetest.chat_send_all(speed)
+        speed=(speed*amount+delay)/(amount+1)
         if amount >= SPAM_WARN then
             if warns+1==SPAM_KICK-SPAM_WARN then
                 minetest.kick_player(name,"Kicked for spamming.")
-            elseif speed >= SPAM_SPEED_MSECS then
+            elseif speed <= SPAM_SPEED_MSECS then
                 minetest.chat_send_player(name,WARNING_COLOR.."Warning ! You are sending messages too fast. Wait at least "..SPAM_SPEED.." seconds before sending another message.")
                 warns=warns+1
                 speed=SPAM_SPEED
