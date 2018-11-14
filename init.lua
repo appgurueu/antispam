@@ -29,6 +29,7 @@ minetest.register_on_chat_message(function(name,message)
         PLAYERS_MSG[name][message][2]=minetest.get_us_time()
         if amount >= SPAM_KICK then
             minetest.kick_player(name,"Kicked for spamming.")
+            toreturn = true
         elseif amount >= SPAM_WARN then
             minetest.chat_send_player(name,WARNING_COLOR.."Warning ! You've sent the message '"..message.."' too often. Wait at least "..RESET_TIME.." seconds before sending it again.")
             toreturn = true
@@ -45,6 +46,7 @@ minetest.register_on_chat_message(function(name,message)
         if amount >= SPAM_WARN then
             if warns+1==SPAM_KICK-SPAM_WARN then
                 minetest.kick_player(name,"Kicked for spamming.")
+                toreturn = true
             elseif speed <= SPAM_SPEED_MSECS then
                 minetest.chat_send_player(name,WARNING_COLOR.."Warning ! You are sending messages too fast. Wait at least "..SPAM_SPEED.." seconds before sending another message.")
                 warns=warns+1
