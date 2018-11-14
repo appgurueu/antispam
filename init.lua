@@ -22,6 +22,7 @@ minetest.register_on_chat_message(function(name,message)
             PLAYERS_MSG[name][msg]=nil
         end
     end
+    local toreturn
     if PLAYERS_MSG[name][message] then
         local amount=PLAYERS_MSG[name][message][1]+1
         PLAYERS_MSG[name][message][1]=amount
@@ -30,6 +31,7 @@ minetest.register_on_chat_message(function(name,message)
             minetest.kick_player(name,"Kicked for spamming.")
         elseif amount >= SPAM_WARN then
             minetest.chat_send_player(name,WARNING_COLOR.."Warning ! You've sent the message '"..message.."' too often. Wait at least "..RESET_TIME.." seconds before sending it again.")
+            toreturn = true
         end
     else
         PLAYERS_MSG[name][message]={1,minetest.get_us_time()}
@@ -48,6 +50,7 @@ minetest.register_on_chat_message(function(name,message)
                 warns=warns+1
                 speed=SPAM_SPEED_MSECS
                 amount=SPAM_WARN
+                toreturn = true
             else
                 speed=0
                 amount=0
@@ -58,4 +61,5 @@ minetest.register_on_chat_message(function(name,message)
     else
         PLAYERS_FREQ[name]={0,0,minetest.get_us_time(),0}
     end
+    return toreturn
 end)
