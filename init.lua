@@ -17,6 +17,8 @@ minetest.register_on_joinplayer(function (player)
     end,player)
 end)
 minetest.register_on_chat_message(function(name,message)
+    if not PLAYERS_MSG[name] then return end
+
     for msg,info in pairs(PLAYERS_MSG[name]) do
         if minetest.get_us_time()-info[2] >= RESET_TIME_MSECS then
             PLAYERS_MSG[name][msg]=nil
